@@ -11,3 +11,8 @@ vision and odometry with a live PID tuning feature for any mechanism.
 📷 [Notes on PhotonVision](https://docs.google.com/document/d/1cDszW4L4ovUtGF3Wdk5iWv_CuAd3GfeWV83lmBKgJjw/edit?usp=sharing)
 
 🤖 [How to run some pre-built autonomous paths!](https://github.com/Chicago-Robotics-Alliance/documentation/blob/main/2025_PathPlanner.md)
+
+
+🤖 [FRC Radio and Switch Setup]([https://github.com/Chicago-Robotics-Alliance/documentation/blob/main/2025_PathPlanner.md](https://docs.google.com/document/d/1oBXmJ2mjKkxuTn34EitmJVyR6GqmPpMqUXVGFPJ6u6U/edit?tab=t.0))
+
+
