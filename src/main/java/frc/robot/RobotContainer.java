@@ -31,6 +31,7 @@ import swervelib.SwerveInputStream;
 
 public class RobotContainer
 {
+  private String robotPoseHasBeenSetFor = "nothing"; 
   final CommandXboxController driverXbox = new CommandXboxController(0);
   //private final Sensation sensation = new Sensation();
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/ava"));
@@ -172,5 +173,17 @@ public class RobotContainer
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
+  }
+
+  public void initializeRobotPositionBasedOnAutoRoutine(){
+    Command autoroutine = getAutonomousCommand();
+    String routineName = autoroutine.getName();
+
+    if(robotPoseHasBeenSetFor.equals(routineName)) {
+      return; //already set for this routine
+    }
+
+    drivebase.resetOdometry(Constants.Positions.getPositionForRobot(routineName));
+    robotPoseHasBeenSetFor = routineName;
   }
 }

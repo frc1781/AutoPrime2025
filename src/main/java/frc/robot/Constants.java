@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+
 import com.revrobotics.spark.config.ClosedLoopConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -101,4 +105,18 @@ public final class Constants
     LIMELIGHT_VISION
   }
 
+  public static class Positions {
+    private static final HashMap<String, Pose2d> startingPoseOfAuto;
+
+    static {
+      startingPoseOfAuto = new HashMap<String, Pose2d>();
+      startingPoseOfAuto.put("StandardLeft", new Pose2d(7.2, 7.5, Rotation2d.fromDegrees(-90))); 
+      startingPoseOfAuto.put("StandardRight", new Pose2d(7.2, 0.5, Rotation2d.fromDegrees(90)));
+      startingPoseOfAuto.put("StandardCenter", new Pose2d(7.165, 4, Rotation2d.fromDegrees(180)));
+    }
+
+    public static Pose2d getPositionForRobot(String autoName) {
+        return startingPoseOfAuto.get(autoName);
+    }       
+  }
 }
