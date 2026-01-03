@@ -26,6 +26,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.Optional;
 
 import swervelib.SwerveInputStream;
 
@@ -177,13 +178,21 @@ public class RobotContainer
 
   public void initializeRobotPositionBasedOnAutoRoutine(){
     Command autoroutine = getAutonomousCommand();
+    if (autoroutine == null) {
+      return;
+    }
     String routineName = autoroutine.getName();
 
     if(robotPoseHasBeenSetFor.equals(routineName)) {
       return; //already set for this routine
     }
 
-    drivebase.resetOdometry(Constants.Positions.getPositionForRobot(routineName));
+    Optional<Pose2d> startingPose = Constants.Positions.getPositionForRobot(routineName);
+    if (startingPose.isEmpty()) {
+      return;
+    }
+
+    drivebase.resetOdometry(startingPose.get());
     robotPoseHasBeenSetFor = routineName;
   }
 }

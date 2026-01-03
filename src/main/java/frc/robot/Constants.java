@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import com.revrobotics.spark.config.ClosedLoopConfig;
 
@@ -115,8 +116,15 @@ public final class Constants
       startingPoseOfAuto.put("StandardCenter", new Pose2d(7.165, 4, Rotation2d.fromDegrees(180)));
     }
 
-    public static Pose2d getPositionForRobot(String autoName) {
-        return startingPoseOfAuto.get(autoName);
+    public static Optional<Pose2d> getPositionForRobot(String autoName) {
+      Pose2d startingPose = startingPoseOfAuto.get(autoName);
+      if (startingPose == null) {
+        return Optional.empty();
+      }
+      else {
+        return Optional.of(startingPose);
+      }
+        
     }       
   }
 }
