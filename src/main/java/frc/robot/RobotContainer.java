@@ -43,7 +43,6 @@ public class RobotContainer
   // private final Climber climber = new Climber();
   private final SendableChooser<Command> autoChooser;
   private double wait_seconds = 5;
-  private boolean isRed = true;
 
   //Trigger coralEnter = new Trigger(sensation::coralPresent);
  // Trigger coralHopper = new Trigger(sensation::coralInHopper);
@@ -186,14 +185,16 @@ public class RobotContainer
     }
   }
 
-  
-
   public void disabledRunningLights() {
     if(isRed()) {
           lights.run(Lights.Colors.RED, Lights.Patterns.TRAVEL);
         } else {
           lights.run(Lights.Colors.BLUE, Lights.Patterns.TRAVEL);
         }
+      }
+
+      public void periodic() {
+
       }
     
       public void initializeRobotPositionBasedOnAutoRoutine(){
