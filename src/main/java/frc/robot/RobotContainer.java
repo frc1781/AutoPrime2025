@@ -26,6 +26,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import swervelib.SwerveInputStream;
@@ -175,6 +176,14 @@ public class RobotContainer
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
+  }
+
+    public static boolean isRed() {
+    try {
+      return DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    } catch (NoSuchElementException e) {
+      return false;
+    }
   }
 
   
