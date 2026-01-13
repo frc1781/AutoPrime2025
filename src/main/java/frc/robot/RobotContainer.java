@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import java.io.File;f
+import java.io.File;
 import java.util.Optional;
 
 import swervelib.SwerveInputStream;
@@ -42,6 +42,7 @@ public class RobotContainer
   // private final Climber climber = new Climber();
   private final SendableChooser<Command> autoChooser;
   private double wait_seconds = 5;
+  private boolean isRed = true;
 
   //Trigger coralEnter = new Trigger(sensation::coralPresent);
  // Trigger coralHopper = new Trigger(sensation::coralInHopper);
@@ -176,7 +177,17 @@ public class RobotContainer
     drivebase.setMotorBrake(brake);
   }
 
-  public void initializeRobotPositionBasedOnAutoRoutine(){
+  
+
+  public void disabledRunningLights() {
+    if(isRed()) {
+          lights.run(Lights.Colors.RED, Lights.Patterns.TRAVEL);
+        } else {
+          lights.run(Lights.Colors.BLUE, Lights.Patterns.TRAVEL);
+        }
+      }
+    
+      public void initializeRobotPositionBasedOnAutoRoutine(){
     Command autoroutine = getAutonomousCommand();
     if (autoroutine == null) {
       return;
