@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
@@ -53,6 +56,18 @@ public class Lights extends SubsystemBase
         timer = new Timer();
         timer.reset();
         timer.start();
+    }
+
+    @Override
+    public void periodic() {
+        int[] rgbData = new int[buffer.getLength() * 3];
+        for (int i = 0; i < buffer.getLength(); i++) {
+            rgbData[i * 3] = buffer.getRed(i);
+            rgbData[i * 3 + 1] = buffer.getGreen(i);
+            rgbData[i * 3 + 2] = buffer.getBlue(i);
+        }
+
+        Logger.recordOutput("LEDs/Strip", rgbData);
     }
 
     private Color solid(int i, Color color)

@@ -39,7 +39,7 @@ public class RobotContainer
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/autoPrime"));
   // private final TankDriveTrain tankDrive = new TankDriveTrain(driverXbox);
   // private final Conveyor conveyor = new Conveyor();
-   private final Lights lights = new Lights();
+  private final Lights lights = new Lights();
   // private final Climber climber = new Climber();
   private final SendableChooser<Command> autoChooser;
   private double wait_seconds = 5;
