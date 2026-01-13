@@ -116,7 +116,7 @@ public class RobotContainer
     }
 
     //conveyor.setDefaultCommand(conveyor.clearCoral(coralHopper));
-   // lights.setDefaultCommand(lights.set(Lights.Special.OFF));
+    lights.setDefaultCommand(lights.set(Lights.Special.OFF));
    // climber.setDefaultCommand(climber.idle());
 
     if (Robot.isSimulation())
@@ -152,7 +152,7 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
      // driverXbox.povUp().whileTrue(climber.ascend());
      // driverXbox.povDown().whileTrue(climber.descend());
-     // driverXbox.y().onTrue(lights.set(Lights.Special.RAINBOW));
+      //driverXbox.y().onTrue(lights.set(Lights.Special.RAINBOW));
      // driverXbox.b().onTrue(lights.set(Lights.Colors.WHITE, Lights.Patterns.MARCH));
 
       //coralEnter.and(coralExit.negate()).and(coralHopper.negate()).onTrue(lights.set(Lights.Colors.RED, Lights.Patterns.FAST_FLASH));
