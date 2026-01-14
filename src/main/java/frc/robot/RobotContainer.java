@@ -96,8 +96,9 @@ public class RobotContainer {
     configureBindings();
 
     DriverStation.silenceJoystickConnectionWarning(true);
-    NamedCommands.registerCommand("CustomWaitCommand",
-        new WaitCommand(SmartDashboard.getNumber("Wait Time", wait_seconds)));
+    NamedCommands.registerCommand("CustomWaitCommand", new WaitCommand(SmartDashboard.getNumber("Wait Time", wait_seconds)));
+    NamedCommands.registerCommand("Score", new Shoot(lights));
+    NamedCommands.registurCommand("Collect", new Collect(lights));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putNumber("Wait Time", wait_seconds);
