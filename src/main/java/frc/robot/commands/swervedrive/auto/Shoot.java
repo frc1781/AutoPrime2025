@@ -9,19 +9,18 @@ public class Shoot extends Command {
     
     Lights lights;
 
-    public Shoot() {
-
+    public Shoot(Lights lights) {
+        this.lights = lights;
     }
 
     @Override
     public void initialize() {
         System.out.println(getName() + "started");
-        lights.set(Colors.GREEN, Patterns.BLINK);
     }
 
     @Override
     public void execute() {
-
+        lights.run(Colors.GREEN, Patterns.BLINK);
     }
 
     @Override

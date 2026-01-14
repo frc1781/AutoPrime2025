@@ -9,6 +9,7 @@ public class Climb extends Command {
     Lights lights;
 
     public Climb(Lights lights) {
+        this.lights = lights;
         timer = new Timer();
     }
 
@@ -17,13 +18,11 @@ public class Climb extends Command {
         System.out.println(getName() + "started");
         timer.reset();
         timer.start();
-
-        lights.set(Lights.Colors.BLUE, Lights.Patterns.FAST_FLASH);
     }
 
     @Override
     public void execute() {
-
+        lights.run(Lights.Colors.BLUE, Lights.Patterns.FAST_FLASH);
     }
 
     @Override
@@ -40,5 +39,6 @@ public class Climb extends Command {
         }
         lights.set(Lights.Special.RAINBOW);
         timer.stop();
+        timer.reset();
     }
 }

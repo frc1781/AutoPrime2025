@@ -62,7 +62,7 @@ public class Lights extends SubsystemBase
     public void periodic() {
         int[] rgbData = new int[buffer.getLength() * 3];
         for (int i = 0; i < buffer.getLength(); i++) {
-            rgbData[i * 3] = buffer.getRed(i);
+            rgbData[i * 3 + 0] = buffer.getRed(i);
             rgbData[i * 3 + 1] = buffer.getGreen(i);
             rgbData[i * 3 + 2] = buffer.getBlue(i);
         }

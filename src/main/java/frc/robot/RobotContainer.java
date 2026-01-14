@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.swervedrive.auto.Climb;
+import frc.robot.commands.swervedrive.auto.Collect;
+import frc.robot.commands.swervedrive.auto.DriveToPose;
+import frc.robot.commands.swervedrive.auto.Shoot;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -31,12 +35,12 @@ import java.util.Optional;
 
 import swervelib.SwerveInputStream;
 
-public class RobotContainer
-{
-  private String robotPoseHasBeenSetFor = "nothing"; 
+public class RobotContainer {
+  private String robotPoseHasBeenSetFor = "nothing";
   final CommandXboxController driverXbox = new CommandXboxController(0);
-  //private final Sensation sensation = new Sensation();
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/autoPrime"));
+  // private final Sensation sensation = new Sensation();
+  private final SwerveSubsystem drivebase = new SwerveSubsystem(
+      new File(Filesystem.getDeployDirectory(), "swerve/autoPrime"));
   // private final TankDriveTrain tankDrive = new TankDriveTrain(driverXbox);
   // private final Conveyor conveyor = new Conveyor();
   private final Lights lights = new Lights();
@@ -44,140 +48,86 @@ public class RobotContainer
   private final SendableChooser<Command> autoChooser;
   private double wait_seconds = 5;
 
-  //Trigger coralEnter = new Trigger(sensation::coralPresent);
- // Trigger coralHopper = new Trigger(sensation::coralInHopper);
- // Trigger coralExit = new Trigger(sensation::coralExitedHopper);
+  // Trigger coralEnter = new Trigger(sensation::coralPresent);
+  // Trigger coralHopper = new Trigger(sensation::coralInHopper);
+  // Trigger coralExit = new Trigger(sensation::coralExitedHopper);
 
-  //Driving the robot during teleOp
+  // Driving the robot during teleOp
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
-    drivebase.getSwerveDrive(),
-    () -> driverXbox.getLeftY() * -1,
-    () -> driverXbox.getLeftX() * -1)
-    .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)  
-    .deadband(OperatorConstants.DEADBAND)
-    .scaleTranslation(0.8)  //might be changed to 1
-    .allianceRelativeControl(true)
-    .cubeRotationControllerAxis(true);
+      drivebase.getSwerveDrive(),
+      () -> driverXbox.getLeftY() * -1,
+      () -> driverXbox.getLeftX() * -1)
+      .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)
+      .deadband(OperatorConstants.DEADBAND)
+      .scaleTranslation(0.8) // might be changed to 1
+      .allianceRelativeControl(true)
+      .cubeRotationControllerAxis(true);
 
-  //Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
+  // Clone's the angular velocity input stream and converts it to a fieldRelative
+  // input stream.
   SwerveInputStream driveDirectAngle = driveAngularVelocity.copy()
-    .withControllerHeadingAxis(() -> driverXbox.getRightX() * -1, () -> driverXbox.getRightY() * -1)
-    .headingWhile(true);
+      .withControllerHeadingAxis(() -> driverXbox.getRightX() * -1, () -> driverXbox.getRightY() * -1)
+      .headingWhile(true);
 
-   // Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+  // Clone's the angular velocity input stream and converts it to a robotRelative
+  // input stream.
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy()
-    .robotRelative(true)
-    .allianceRelativeControl(false);
+      .robotRelative(true)
+      .allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(
-    drivebase.getSwerveDrive(),
-    () -> -driverXbox.getLeftY(),
-    () -> -driverXbox.getLeftX())
-      .withControllerRotationAxis(() -> driverXbox.getRawAxis( 2))
+      drivebase.getSwerveDrive(),
+      () -> -driverXbox.getLeftY(),
+      () -> -driverXbox.getLeftX())
+      .withControllerRotationAxis(() -> driverXbox.getRawAxis(2))
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(0.8)
       .allianceRelativeControl(true);
 
   SwerveInputStream driveDirectAngleKeyboard = driveAngularVelocityKeyboard.copy()
-    .withControllerHeadingAxis(
-      () -> Math.sin(driverXbox.getRawAxis(2) * Math.PI) *(Math.PI *2),
-      () -> Math.cos(driverXbox.getRawAxis(2) *Math.PI) *(Math.PI *2))
-        .headingWhile(true)
-        .translationHeadingOffset(true)
-        .translationHeadingOffset(Rotation2d.fromDegrees( 0));
+      .withControllerHeadingAxis(
+          () -> Math.sin(driverXbox.getRawAxis(2) * Math.PI) * (Math.PI * 2),
+          () -> Math.cos(driverXbox.getRawAxis(2) * Math.PI) * (Math.PI * 2))
+      .headingWhile(true)
+      .translationHeadingOffset(true)
+      .translationHeadingOffset(Rotation2d.fromDegrees(0));
 
-  public RobotContainer()
-  {
+  public RobotContainer() {
     configureBindings();
 
     DriverStation.silenceJoystickConnectionWarning(true);
-    NamedCommands.registerCommand("CustomWaitCommand", new WaitCommand(SmartDashboard.getNumber("Wait Time", wait_seconds)));
+    NamedCommands.registerCommand("CustomWaitCommand",
+        new WaitCommand(SmartDashboard.getNumber("Wait Time", wait_seconds)));
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putNumber("Wait Time", wait_seconds);
   }
 
-  private void configureBindings()
-  {
+  private void configureBindings() {
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
-    //Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-    //Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
-    //Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
-    Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
-    //Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
-    //Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
-    if (RobotBase.isSimulation())
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-    } 
-    else
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
-    }
-
-    //conveyor.setDefaultCommand(conveyor.clearCoral(coralHopper));
+    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
     lights.setDefaultCommand(lights.set(Lights.Special.OFF));
-   // climber.setDefaultCommand(climber.idle());
 
-    if (Robot.isSimulation())
-    {
-      Pose2d target = new Pose2d(new Translation2d(1, 4), Rotation2d.fromDegrees(90));
-      driveDirectAngleKeyboard.driveToPose(
-        () -> target, 
-        new ProfiledPIDController(5, 0,0, new Constraints(5, 2)),
-        new ProfiledPIDController(5,0,0, new Constraints(Units.degreesToRadians(360), Units.degreesToRadians(180))));
-      driverXbox.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-      driverXbox.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
-      driverXbox.button(2).whileTrue(Commands.runEnd(() -> driveDirectAngleKeyboard.driveToPoseEnabled(true),
-                                                      () -> driveDirectAngleKeyboard.driveToPoseEnabled(false)));
-    }
-
-    if (DriverStation.isTest())
-    {
-      //drivebase.setDefaultCommand(driveFieldOrienteAnglularVelocity); // Overrides drive command above!d
-      driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-      driverXbox.leftBumper().onTrue(Commands.none());
-      driverXbox.rightBumper().onTrue(Commands.none());
-    } 
-    else
-    {
-      driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverXbox.start().whileTrue(Commands.none());
-      driverXbox.back().whileTrue(Commands.none());
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().onTrue(Commands.none());
-     // driverXbox.povUp().whileTrue(climber.ascend());
-     // driverXbox.povDown().whileTrue(climber.descend());
-      driverXbox.y().onTrue(lights.set(Lights.Special.RAINBOW));
-      driverXbox.b().onTrue(lights.set(Lights.Colors.WHITE, Lights.Patterns.MARCH));
-
-      //coralEnter.and(coralExit.negate()).and(coralHopper.negate()).onTrue(lights.set(Lights.Colors.RED, Lights.Patterns.FAST_FLASH));
-     // coralHopper.and(coralExit.negate()).onTrue(lights.set(Lights.Colors.RED, Lights.Patterns.MARCH));
-     // coralExit.onFalse(lights.set(Lights.Colors.RED, Lights.Patterns.SOLID));
-    }
+    driverXbox.a().whileTrue(new Climb(lights));
+    driverXbox.x().whileTrue(new Collect(lights));
+    driverXbox.start().whileTrue(Commands.none());
+    driverXbox.back().whileTrue(Commands.none());
+    driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+    driverXbox.rightBumper().onTrue(Commands.none());
+    driverXbox.y().whileTrue(new DriveToPose(lights));
+    driverXbox.b().whileTrue(new Shoot(lights));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand()
-  {
+  public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
 
-  public void setMotorBrake(boolean brake)
-  {
+  public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
   }
 
-    public static boolean isRed() {
+  public static boolean isRed() {
     try {
       return DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
     } catch (NoSuchElementException e) {
@@ -186,26 +136,26 @@ public class RobotContainer
   }
 
   public void disabledRunningLights() {
-    if(isRed()) {
-          lights.run(Lights.Colors.RED, Lights.Patterns.TRAVEL);
-        } else {
-          lights.run(Lights.Colors.BLUE, Lights.Patterns.TRAVEL);
-        }
-      }
+    if (isRed()) {
+      lights.run(Lights.Colors.RED, Lights.Patterns.TRAVEL);
+    } else {
+      lights.run(Lights.Colors.BLUE, Lights.Patterns.TRAVEL);
+    }
+  }
 
-      public void periodic() {
+  public void periodic() {
 
-      }
-    
-      public void initializeRobotPositionBasedOnAutoRoutine(){
+  }
+
+  public void initializeRobotPositionBasedOnAutoRoutine() {
     Command autoroutine = getAutonomousCommand();
     if (autoroutine == null) {
       return;
     }
     String routineName = autoroutine.getName();
 
-    if(robotPoseHasBeenSetFor.equals(routineName)) {
-      return; //already set for this routine
+    if (robotPoseHasBeenSetFor.equals(routineName)) {
+      return; // already set for this routine
     }
 
     Optional<Pose2d> startingPose = Constants.Positions.getPositionForRobot(routineName);

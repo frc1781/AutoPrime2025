@@ -9,19 +9,18 @@ public class DriveToPose extends Command {
 
     Lights lights;
 
-    public DriveToPose() {
-
+    public DriveToPose(Lights lights) {
+        this.lights = lights;
     }
 
     @Override
     public void initialize() {
         System.out.println(getName() + "started");
-        lights.set(Colors.ORANGE, Patterns.TRAVEL);
     }
 
     @Override
     public void execute() {
-
+        lights.run(Colors.ORANGE, Patterns.TRAVEL);
     }
 
     @Override

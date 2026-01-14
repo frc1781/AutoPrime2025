@@ -8,19 +8,18 @@ import frc.robot.subsystems.Lights.Patterns;
 public class Collect extends Command {
     Lights lights;
 
-    public Collect() {
-
+    public Collect(Lights lights) {
+        this.lights = lights;
     }
 
     @Override
     public void initialize() {
         System.out.println(getName() + "started");
-        lights.set(Colors.YELLOW, Patterns.MARCH);
     }
 
     @Override
     public void execute() {
-
+        lights.run(Colors.YELLOW, Patterns.MARCH);
     }
 
     @Override
