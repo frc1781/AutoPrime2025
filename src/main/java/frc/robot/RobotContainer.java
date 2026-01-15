@@ -99,7 +99,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("CustomWaitCommand", new WaitCommand(SmartDashboard.getNumber("Wait Time", wait_seconds)));
     NamedCommands.registerCommand("Score", new Shoot(lights));
     NamedCommands.registerCommand("Collect", new Collect(lights));
-    
+    NamedCommands.registerCommand("Climb", new Climb(lights));
+
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putNumber("Wait Time", wait_seconds);
