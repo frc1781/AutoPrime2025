@@ -356,22 +356,22 @@ public class Vision
 
     LEFT_CAM("Left",
           new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(90)),
-          new Translation3d(Units.inchesToMeters(13), Units.inchesToMeters(7.75), Units.inchesToMeters(11.5)),
+          new Translation3d(Units.inchesToMeters(-1), Units.inchesToMeters(-14), Units.inchesToMeters(15.5)),
           VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
 
     RIGHT_CAM("Right",
             new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(270)),
-            new Translation3d(Units.inchesToMeters(13), Units.inchesToMeters(-9), Units.inchesToMeters(10.5)),
+            new Translation3d(Units.inchesToMeters(-2), Units.inchesToMeters(-14), Units.inchesToMeters(15.5)),
             VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
 
     FRONT_CAM("Front",
               new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(0)),
-              new Translation3d(Units.inchesToMeters(-13.8125), Units.inchesToMeters(0), Units.inchesToMeters(26.5)),
+              new Translation3d(Units.inchesToMeters(-13.8125), Units.inchesToMeters(0), Units.inchesToMeters(15.5)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
                
-    BACK_CAM("BackApriltag",
+    BACK_CAM("Back",
                new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(180)),
-               new Translation3d(Units.inchesToMeters(-13.8125), Units.inchesToMeters(0), Units.inchesToMeters(26.5)),
+               new Translation3d(Units.inchesToMeters(13.8125), Units.inchesToMeters(0), Units.inchesToMeters(15.5)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
  
 
