@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Simple shoot and climb"
+            "pathName": "centerShootClimb"
           }
         },
         {
