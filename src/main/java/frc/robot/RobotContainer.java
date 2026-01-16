@@ -114,7 +114,7 @@ public class RobotContainer {
 
     driverXbox.a().whileTrue(new Climb(lights));
     driverXbox.x().whileTrue(new Collect(lights));
-    driverXbox.start().whileTrue(Commands.none());
+    driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     driverXbox.back().whileTrue(Commands.none());
     driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
     driverXbox.rightBumper().onTrue(Commands.none());
