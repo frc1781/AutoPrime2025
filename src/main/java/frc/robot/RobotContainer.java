@@ -140,7 +140,7 @@ public class RobotContainer {
 
   public void disabledRunningLights() {
     if (isRed()) {
-      lights.run(Lights.Colors.RED, Lights.Patterns.TRAVEL);
+      lights.run(Lights.Colors.GREEN, Lights.Patterns.TRAVEL);
     } else {
       lights.run(Lights.Colors.BLUE, Lights.Patterns.TRAVEL);
     }

@@ -56,7 +56,9 @@ import swervelib.telemetry.SwerveDriveTelemetry;
  */
 public class Vision
 {
-  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+  //public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+  public static final AprilTagFieldLayout fieldLayout = loadAprilTagField();
+  
   /**
    * Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
    */
@@ -68,8 +70,6 @@ public class Vision
    * Field from {@link swervelib.SwerveDrive#field}
    */
   private Field2d field2d;
-
-
   /**
    * Constructor for the Vision class.
    *
@@ -93,6 +93,17 @@ public class Vision
 
       openSimCameraViews();
     }
+  }
+
+  static AprilTagFieldLayout loadAprilTagField() {
+    try {
+      return new AprilTagFieldLayout("aprilTags/2026field");
+    }
+    catch(Exception e) {
+      System.out.println("not open 2026 april tag field map");
+    }
+
+    return null;
   }
 
   /**
