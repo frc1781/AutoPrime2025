@@ -97,7 +97,7 @@ public class Vision
 
   static AprilTagFieldLayout loadAprilTagField() {
     try {
-      return new AprilTagFieldLayout("aprilTags/2026field");
+      return new AprilTagFieldLayout("deploy/aprilTags/2026field.json");
     }
     catch(Exception e) {
       System.out.println("not open 2026 april tag field map");
