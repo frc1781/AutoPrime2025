@@ -21,12 +21,14 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -95,16 +97,20 @@ public class Vision
     }
   }
 
-  static AprilTagFieldLayout loadAprilTagField() {
+static AprilTagFieldLayout loadAprilTagField() {
     try {
-      return new AprilTagFieldLayout("deploy/aprilTags/2026field.json");
-    }
-    catch(Exception e) {
-      System.out.println("not open 2026 april tag field map");
-    }
+        Path path = Filesystem.getDeployDirectory().toPath()
+                .resolve("aprilTags/2026field.json");
 
-    return null;
-  }
+        System.out.println("Loading AprilTag field from: " + path.toAbsolutePath());
+
+        return new AprilTagFieldLayout(path);
+    } catch (Exception e) {
+        System.err.println("Failed to load AprilTag field:");
+        e.printStackTrace();
+        return null;
+    }
+}
 
   /**
    * Calculates a target pose relative to an AprilTag on the field.
