@@ -52,6 +52,7 @@ public class RobotContainer {
   // Trigger coralHopper = new Trigger(sensation::coralInHopper);
   // Trigger coralExit = new Trigger(sensation::coralExitedHopper);
 
+
   // Driving the robot during teleOp
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
       drivebase.getSwerveDrive(),
@@ -107,9 +108,9 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOriented = drivebase.driveFieldOriented(driveAngularVelocity);
 
-    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+    drivebase.setDefaultCommand(driveFieldOriented);
     lights.setDefaultCommand(lights.set(Lights.Special.OFF));
 
     driverXbox.a().whileTrue(new Climb(lights));
